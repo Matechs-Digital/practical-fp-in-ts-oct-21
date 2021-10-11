@@ -30,8 +30,8 @@ Day 1:
 - Pure Functions
 - Introduction of Effect-TS
 - Variance in TypeScript: Covariance and Contravariance
+- Tagged unions & the very basic of ADTs
 - The Effect Data-Type and its utilities
-- Introduce the mars rover kata
 
 Day 2:
 
@@ -40,17 +40,18 @@ Day 2:
 - Using Layers to structure dependency construction
 - Writing modular applications with Effect
 - Testing modular applications
+- Introduce the mars rover kata
 
 Day 3:
 
 - A quick overview of the tools in the box (queues, ref, schedule, stream, etc.)
-- Build a minimal HTTP server that executes queries against a simulated db
 - ADTs, GADTs, and e-DSLs
+- Build a tiny, minimal version of Schema
 
 Day 4:
 
-- Build a tiny, minimal version of Schema
 - Build a tiny, minimal version of Effect (synchronous and stack-safe)
+- Build a minimal HTTP server that executes queries against a simulated db
 
 ## Organization
 

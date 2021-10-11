@@ -210,9 +210,14 @@ export function guard<I, A>(self: Schema<I, A>): Guard<A> {
   return pipe(
     self,
     matchTag({
-      SchemaNumberString: () => (_: unknown): _ is A =>
-        typeof _ === "number" ? true : false,
-      SchemaUnknown: () => (_: unknown): _ is A => true,
+      SchemaNumberString:
+        () =>
+        (_: unknown): _ is A =>
+          typeof _ === "number" ? true : false,
+      SchemaUnknown:
+        () =>
+        (_: unknown): _ is A =>
+          true,
       SchemaCompose: ({ use }) => use((_, that) => guard(that)),
       SchemaRefinement: ({ use }) =>
         use(

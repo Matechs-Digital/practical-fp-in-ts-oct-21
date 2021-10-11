@@ -95,8 +95,10 @@ export class Concat<A> {
   ) {}
 }
 
-export const concat = (op2: Expr<string>) => (op1: Expr<string>): Expr<string> =>
-  new Concat(op1, op2, identity)
+export const concat =
+  (op2: Expr<string>) =>
+  (op1: Expr<string>): Expr<string> =>
+    new Concat(op1, op2, identity)
 
 export function numericValue(value: number): Expr<number> {
   return new NumericValue(value, identity)

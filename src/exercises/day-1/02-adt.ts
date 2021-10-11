@@ -61,6 +61,16 @@ export function render(a: BooleanADT) {
 /**
  * Exercise:
  *
+ * Model a portfolio of assets and write a pnl(portfolio) function that returns
+ * the profit and losses of the portfolio, every asset can be either:
+ * - Real Estate Property: purchase date, purchase price, current price
+ * - Stock: purchase date, purchase price, cumulated dividends
+ * - Foreign Currency: purchase date, purchase price, current price
+ */
+
+/**
+ * Exercise:
+ *
  * Build an adt MathExpr with members:
  * - Value (contains a numeric value)
  * - Add (describe a sum operation of 2 expressions)
