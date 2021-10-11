@@ -4,7 +4,7 @@
 
 Welcome to Practical Functional Programming with Typescript!
 
-In this 3-day interactive workshop (8h/day), we’ll cover a wide range of topics, mixing theory and practice. You’ll learn the basics of FP (Pure Functions, ADTs, e-DSLs) and how to use functional effect-systems to build modular, performant applications that are easy to write and maintain.
+In this 4-day interactive workshop (5h/day), we’ll cover a wide range of topics, mixing theory and practice. You’ll learn the basics of FP (Pure Functions, ADTs, e-DSLs) and how to use functional effect-systems to build modular, performant applications that are easy to write and maintain.
 We expect attendees to do practical exercises and solve problems in real-time. Typically, every 10 minutes of theory lessons follow a 15-20 minutes exercise session.
 One of our core principles is no surprises. We teach everything from the basic principles, without presumptions, and without leaving the magic unfolded.
 In this workshop, Typescript developers will learn how to solve complex problems in asynchronous and concurrent programming using the effect-ts library.
@@ -28,24 +28,29 @@ Good working knowledge of Typescript, including tagged unions, conditional types
 Day 1:
 
 - Pure Functions
-- ADTs, GADTs, and e-DSLs
+- Introduction of Effect-TS
 - Variance in TypeScript: Covariance and Contravariance
-- Build a tiny, minimal version of Effect (synchronous and stack-safe)
+- The Effect Data-Type and its utilities
+- Introduce the mars rover kata
 
 Day 2:
 
-- Introduction of Effect-TS
-- The Effect Data-Type and its utilities
+- Lightweight introduction to Fibers and concurrency
+- Managing Resources with the Managed Data-Type
+- Using Layers to structure dependency construction
 - Writing modular applications with Effect
 - Testing modular applications
 
 Day 3:
 
-- Lightweight introduction to Fibers and concurrency
-- Managing Resources with the Managed Data-Type
-- Using Layers to structure dependency construction
 - A quick overview of the tools in the box (queues, ref, schedule, stream, etc.)
-- Build a minimal HTTP server that executes queries against PostgreSQL
+- Build a minimal HTTP server that executes queries against a simulated db
+- ADTs, GADTs, and e-DSLs
+
+Day 4:
+
+- Build a tiny, minimal version of Schema
+- Build a tiny, minimal version of Effect (synchronous and stack-safe)
 
 ## Organization
 
@@ -57,10 +62,10 @@ Don't forget to join our Discord community: https://discord.com/invite/drVHpNgqD
 
 ## Schedule
 
-- 10:00 - 12:00 : 1st session
-- 12:00 - 13:00 : lunch break
-- 13:00 - 14:45 : 2nd session
-- 14:45 - 15:00 : coffee break
-- 15:00 - 16:45 : 3rd session
-- 16:45 - 17:00 : coffee break
-- 17:00 - 18:00 : 4th session
+- 16:00 - 17:15 : 1st session
+- 17:15 - 17:30 : coffe break
+- 17:30 - 18:30 : 2nd session
+- 18:30 - 19:00 : dinner break
+- 19:00 - 20:00 : 3rd session
+- 20:00 - 20:15 : coffee break
+- 20:15 - 21:00 : 4th session
