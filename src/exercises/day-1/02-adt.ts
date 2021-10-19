@@ -7,9 +7,6 @@
  * your day-to-day problems.
  */
 
-import { pipe } from "@effect-ts/core/Function"
-import { matchTag } from "@effect-ts/core/Utils"
-
 /**
  * Segment:
  *
@@ -20,52 +17,6 @@ import { matchTag } from "@effect-ts/core/Utils"
  * Exercise:
  *
  * Costruct the Boolean ADT and 3 functions: equals, invert, render
- */
-export class True {
-  readonly _tag = "True"
-}
-
-export class False {
-  readonly _tag = "False"
-}
-
-export type BooleanADT = True | False
-
-export const trueValue: BooleanADT = new True()
-
-export const falseValue: BooleanADT = new False()
-
-export function invert(self: BooleanADT): BooleanADT {
-  return pipe(
-    self,
-    matchTag({
-      False: () => trueValue,
-      True: () => falseValue
-    })
-  )
-}
-
-export function equals(bool2: BooleanADT) {
-  return (bool1: BooleanADT) => bool1._tag === bool2._tag
-}
-
-export function render(a: BooleanADT) {
-  switch (a._tag) {
-    case "False":
-      return "False"
-    case "True":
-      return "True"
-  }
-}
-
-/**
- * Exercise:
- *
- * Model a portfolio of assets and write a pnl(portfolio) function that returns
- * the profit and losses of the portfolio, every asset can be either:
- * - Real Estate Property: purchase date, purchase price, current price
- * - Stock: purchase date, purchase price, cumulated dividends
- * - Foreign Currency: purchase date, purchase price, current price
  */
 
 /**
@@ -78,52 +29,6 @@ export function render(a: BooleanADT) {
  * - Mul (describe a multiplication operation of 2 expressions)
  * - Div (describe a division operation of 2 expressions)
  */
-export class Value {
-  readonly _tag = "Value"
-  constructor(readonly value: number) {}
-}
-
-export class Add {
-  readonly _tag = "Add"
-  constructor(readonly op1: MathExpr, readonly op2: MathExpr) {}
-}
-
-export class Sub {
-  readonly _tag = "Sub"
-  constructor(readonly op1: MathExpr, readonly op2: MathExpr) {}
-}
-
-export class Mul {
-  readonly _tag = "Mul"
-  constructor(readonly op1: MathExpr, readonly op2: MathExpr) {}
-}
-
-export class Div {
-  readonly _tag = "Div"
-  constructor(readonly op1: MathExpr, readonly op2: MathExpr) {}
-}
-
-export function value(value: number): MathExpr {
-  return new Value(value)
-}
-
-export function add(op2: MathExpr) {
-  return (op1: MathExpr): MathExpr => new Add(op1, op2)
-}
-
-export function sub(op2: MathExpr) {
-  return (op1: MathExpr): MathExpr => new Sub(op1, op2)
-}
-
-export function mul(op2: MathExpr) {
-  return (op1: MathExpr): MathExpr => new Mul(op1, op2)
-}
-
-export function div(op2: MathExpr) {
-  return (op1: MathExpr): MathExpr => new Div(op1, op2)
-}
-
-export type MathExpr = Value | Add | Sub | Mul | Div
 
 /**
  * Exercise:
@@ -136,34 +41,31 @@ export type MathExpr = Value | Add | Sub | Mul | Div
  *
  * Create a small program using the MathExpr constructors
  */
-export const program: MathExpr = pipe(
-  value(2),
-  add(value(3)),
-  sub(value(4)),
-  mul(value(2)),
-  div(value(5))
-)
 
 /**
  * Exercise:
  *
- * Implement the function evaluate
+ * Implement the function evaluate MathExpr => number
  */
-export function evaluate(expr: MathExpr): number {
-  return pipe(
-    expr,
-    matchTag({
-      Add: ({ op1, op2 }) => evaluate(op1) + evaluate(op2),
-      Sub: ({ op1, op2 }) => evaluate(op1) - evaluate(op2),
-      Div: ({ op1, op2 }) => evaluate(op1) / evaluate(op2),
-      Mul: ({ op1, op2 }) => evaluate(op1) * evaluate(op2),
-      Value: (v) => v.value
-    })
-  )
-}
 
 /**
  * Exercise:
  *
  * Write tests that assert correct behaviour of the evaluate function
+ */
+
+/**
+ * Exercise:
+ *
+ * Use the Tagged helper to rewrite MathExpr
+ */
+
+/**
+ * Exercise:
+ *
+ * Model a portfolio of assets and write a pnl(portfolio) function that returns
+ * the profit and losses of the portfolio, every asset can be either:
+ * - Real Estate Property: purchase date, purchase price, current price
+ * - Stock: purchase date, purchase price, cumulated dividends
+ * - Foreign Currency: purchase date, purchase price, current price
  */

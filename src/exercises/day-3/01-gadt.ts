@@ -7,7 +7,7 @@
  */
 
 import { identity, pipe } from "@effect-ts/core/Function"
-import { matchTag } from "@effect-ts/core/Utils"
+import { matchTag, Unify } from "@effect-ts/core/Utils"
 
 /**
  * Segment:
@@ -145,7 +145,7 @@ export function div(right: Expr<number>) {
  * Implement the evaluate function
  */
 
-export function evaluate<A>(expr: Expr<A>): A {
+export function evaluate<A>(expr: Expr<A>): Unify<A> {
   return pipe(
     expr,
     matchTag({
