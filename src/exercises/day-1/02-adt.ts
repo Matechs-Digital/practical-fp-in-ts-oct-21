@@ -1,3 +1,13 @@
+interface B {
+  _tag: "B"
+  b: string
+}
+
+interface A {
+  _tag: "A"
+  a: number
+}
+
 /**
  * Theory:
  *
@@ -6,6 +16,33 @@
  * In this module we introduce the basic concepts of domain specific languages and we look into practical ways of building DSLs for
  * your day-to-day problems.
  */
+
+type AB = A | B
+
+function ab(x: AB): number {
+  switch (x._tag) {
+    case "A": {
+      return x.a
+    }
+    case "B": {
+      return x.b.length
+    }
+  }
+}
+
+interface A1 {
+  A1: {
+    n: number
+  }
+}
+
+interface A2 {
+  A2: {
+    n: string
+  }
+}
+
+const ab1: A1 & A2 = { A1: { n: 0 }, A2: { n: "str" } }
 
 /**
  * Segment:

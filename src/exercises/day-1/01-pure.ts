@@ -4,7 +4,7 @@ import * as MathExpr from "./01-MathExpr"
 
 const x = pipe(
   MathExpr.fromNumber(0),
-  MathExpr.add(MathExpr.fromNumber(0)),
-  MathExpr.mul(MathExpr.fromNumber(0)),
+  MathExpr.add(MathExpr.fromNumber(1)),
+  MathExpr.mul(MathExpr.fromNumber(2)),
   MathExpr.get
 )
