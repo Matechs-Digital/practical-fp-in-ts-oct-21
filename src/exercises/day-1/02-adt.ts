@@ -1,4 +1,5 @@
 import { Tagged } from "@effect-ts/core/Case"
+import { PlainArr } from "@effect-ts/system/Collections/Immutable/Chunk"
 import { pipe } from "@effect-ts/system/Function"
 
 interface B {
@@ -218,6 +219,64 @@ export function render(expr: MathExpr): string {
  * Model a portfolio of assets and write a pnl function that returns
  * the profit and losses of the portfolio, every asset can be either:
  * - Real Estate Property: purchase date, purchase price, current price
- * - Stock: purchase date, purchase price, cumulated dividends
+ * - Stock: purchase date, current price, cumulated dividends
  * - Foreign Currency: purchase date, purchase price, current price
  */
+export type AssetType = RealEstate | Stock | ForeignCurrency
+
+export class RealEstate extends Tagged("RealEstate")<{
+  readonly currentPrice: number
+  readonly purchasePrice: number
+}> {}
+
+export class Stock extends Tagged("Stock")<{
+  readonly currentPrice: number
+  readonly purchasePrice: number
+  readonly cumulatedDividends: number
+}> {}
+
+export class ForeignCurrency extends Tagged("ForeignCurrency")<{
+  readonly currentPrice: number
+  readonly purchasePrice: number
+}> {}
+
+export class Portfolio extends Tagged("Portfolio")<{
+  readonly assets: readonly AssetType[]
+}> {}
+
+export function realEstate(_: {
+  readonly currentPrice: number
+  readonly purchasePrice: number
+}): AssetType {
+  return new RealEstate(_)
+}
+
+export function stock(_: {
+  readonly currentPrice: number
+  readonly purchasePrice: number
+  readonly cumulatedDividends: number
+}): AssetType {
+  return new Stock(_)
+}
+
+export function foreignCurrency(_: {
+  readonly currentPrice: number
+  readonly purchasePrice: number
+}): AssetType {
+  return new ForeignCurrency(_)
+}
+
+export function empty(): Portfolio {
+  return new Portfolio({ assets: [] })
+}
+
+export function addAsset(asset: AssetType): (self: Portfolio) => Portfolio {
+  return (self) => new Portfolio({ assets: [...self.assets, asset] })
+}
+
+export const portfolio = pipe(
+  empty(),
+  addAsset(stock({ cumulatedDividends: 0, currentPrice: 1, purchasePrice: 0.9 })),
+  addAsset(foreignCurrency({ currentPrice: 1, purchasePrice: 0.9 })),
+  addAsset(realEstate({ currentPrice: 1, purchasePrice: 0.9 }))
+)
