@@ -15,6 +15,13 @@
 //
 // example code with simple identity
 //
+class Id<A> {
+  constructor(readonly a: A) {}
+
+  map<A, B>(this: Id<A>, f: (a: A) => B): Id<B> {
+    return new Id(f(this.a))
+  }
+}
 
 /**
  * Exercise:
