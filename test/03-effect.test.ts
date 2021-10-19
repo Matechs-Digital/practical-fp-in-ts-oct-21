@@ -1,7 +1,7 @@
 import * as Eff from "@app/exercises/day-1/03-effect"
 import * as T from "@effect-ts/core/Effect"
 import * as Ex from "@effect-ts/core/Effect/Exit"
-import { pipe } from "@effect-ts/system/Function"
+import { pipe } from "@effect-ts/core/Function"
 
 describe("Effect", () => {
   it("should succeed", async () => {
