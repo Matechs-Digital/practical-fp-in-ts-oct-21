@@ -21,7 +21,7 @@ interface A {
 
 type AB = A | B
 
-function ab(x: AB): number {
+export function ab(x: AB): number {
   switch (x._tag) {
     case "A": {
       return x.a
@@ -44,7 +44,7 @@ interface A2 {
   }
 }
 
-const ab1: A1 & A2 = { A1: { n: 0 }, A2: { n: "str" } }
+export const ab1: A1 & A2 = { A1: { n: 0 }, A2: { n: "str" } }
 
 /**
  * Segment:

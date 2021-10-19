@@ -1,5 +1,7 @@
+import * as ADT from "@app/exercises/day-1/02-adt"
+
 describe("Dummy", () => {
-  it("dummy", () => {
-    expect(1).equals(1)
+  it("shouldBeTrue should be true", () => {
+    expect(ADT.shouldBeTrue).toEqual(ADT.fromBoolean(true))
   })
 })
