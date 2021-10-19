@@ -1,3 +1,5 @@
+import { pipe } from "@effect-ts/system/Function"
+
 interface B {
   _tag: "B"
   b: string
@@ -55,6 +57,28 @@ const ab1: A1 & A2 = { A1: { n: 0 }, A2: { n: "str" } }
  *
  * Costruct the Boolean ADT and 3 functions: equals, invert, render
  */
+export class True {
+  readonly _tag = "True"
+}
+export class False {
+  readonly _tag = "False"
+}
+export type Bool = True | False
+
+export function fromBoolean(b: boolean): Bool {
+  return b ? new True() : new False()
+}
+export function equal(b: Bool): (a: Bool) => Bool {
+  return (a) => (b._tag === a._tag ? fromBoolean(true) : fromBoolean(false))
+}
+export function invert(a: Bool): Bool {
+  return a._tag === "False" ? fromBoolean(true) : fromBoolean(false)
+}
+export function render(a: Bool): "True" | "False" {
+  return a._tag === "False" ? "True" : "False"
+}
+
+export const shouldBeTrue = pipe(fromBoolean(true), invert, equal(fromBoolean(false)))
 
 /**
  * Exercise:
