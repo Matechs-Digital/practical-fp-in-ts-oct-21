@@ -74,7 +74,7 @@ export function equal(b: Bool): (a: Bool) => Bool {
 export function invert(a: Bool): Bool {
   return a._tag === "False" ? fromBoolean(true) : fromBoolean(false)
 }
-export function render(a: Bool): "True" | "False" {
+export function render_(a: Bool): "True" | "False" {
   return a._tag === "False" ? "True" : "False"
 }
 
@@ -179,8 +179,27 @@ export function evaluate(expr: MathExpr): number {
 /**
  * Exercise:
  *
- * Implement the function "render" that renders a MathExpr producing a string (2 * 3 ...)
+ * Implement the function "render" that renders a MathExpr producing a string ((2 * 3) + (3 - 2))
  */
+export function render(expr: MathExpr): string {
+  switch (expr._tag) {
+    case "Value": {
+      return `${expr.n}`
+    }
+    case "Add": {
+      return `(${render(expr.left)} + ${render(expr.right)})`
+    }
+    case "Mul": {
+      return `(${render(expr.left)} * ${render(expr.right)})`
+    }
+    case "Div": {
+      return `(${render(expr.left)} / ${render(expr.right)})`
+    }
+    case "Sub": {
+      return `(${render(expr.left)} - ${render(expr.right)})`
+    }
+  }
+}
 
 /**
  * Exercise:
