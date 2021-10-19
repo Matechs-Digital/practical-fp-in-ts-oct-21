@@ -90,6 +90,32 @@ export const shouldBeTrue = pipe(fromBoolean(true), invert, equal(fromBoolean(fa
  * - Mul (describe a multiplication operation of 2 expressions)
  * - Div (describe a division operation of 2 expressions)
  */
+export type MathExpr = Value | Add | Sub | Mul | Div
+
+export class Value {
+  readonly _tag = "Value"
+  constructor(readonly n: number) {}
+}
+
+export class Add {
+  readonly _tag = "Add"
+  constructor(readonly left: MathExpr, readonly right: MathExpr) {}
+}
+
+export class Sub {
+  readonly _tag = "Sub"
+  constructor(readonly left: MathExpr, readonly right: MathExpr) {}
+}
+
+export class Mul {
+  readonly _tag = "Mul"
+  constructor(readonly left: MathExpr, readonly right: MathExpr) {}
+}
+
+export class Div {
+  readonly _tag = "Div"
+  constructor(readonly left: MathExpr, readonly right: MathExpr) {}
+}
 
 /**
  * Exercise:
