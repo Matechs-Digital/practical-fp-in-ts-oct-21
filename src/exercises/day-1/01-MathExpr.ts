@@ -28,19 +28,19 @@ export function fromNumber(n: number): MathExpr {
 }
 
 export function add(that: MathExpr) {
-  return (self: MathExpr) => ({ n: self.n + that.n })
+  return (self: MathExpr): MathExpr => ({ n: self.n + that.n })
 }
 
 export function mul(that: MathExpr) {
-  return (self: MathExpr) => ({ n: self.n * that.n })
+  return (self: MathExpr): MathExpr => ({ n: self.n * that.n })
 }
 
 export function sub(that: MathExpr) {
-  return (self: MathExpr) => ({ n: self.n - that.n })
+  return (self: MathExpr): MathExpr => ({ n: self.n - that.n })
 }
 
 export function div(that: MathExpr) {
-  return (self: MathExpr) => ({ n: self.n / that.n })
+  return (self: MathExpr): MathExpr => ({ n: self.n / that.n })
 }
 
 export function get(self: MathExpr): number {

@@ -123,11 +123,33 @@ export class Div {
  * Create constructors & combinators for all the members in MathExpr (pipeable)
  */
 
+export function fromNumber(n: number): MathExpr {
+  return new Value(n)
+}
+
+export function add(that: MathExpr) {
+  return (self: MathExpr): MathExpr => new Add(self, that)
+}
+
+export function mul(that: MathExpr) {
+  return (self: MathExpr): MathExpr => new Mul(self, that)
+}
+
+export function sub(that: MathExpr) {
+  return (self: MathExpr): MathExpr => new Sub(self, that)
+}
+
+export function div(that: MathExpr) {
+  return (self: MathExpr): MathExpr => new Div(self, that)
+}
+
 /**
  * Exercise:
  *
  * Create a small program using the MathExpr module api
  */
+
+export const program = pipe(fromNumber(0), add(fromNumber(1)), mul(fromNumber(2)))
 
 /**
  * Exercise:
