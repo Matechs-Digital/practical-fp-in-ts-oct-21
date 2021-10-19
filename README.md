@@ -70,3 +70,5 @@ Don't forget to join our Discord community: https://discord.com/invite/drVHpNgqD
 - 19:00 - 20:00 : 3rd session
 - 20:00 - 20:15 : coffee break
 - 20:15 - 21:00 : 4th session
+
+// record
