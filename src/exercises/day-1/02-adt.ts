@@ -51,7 +51,7 @@
 /**
  * Exercise:
  *
- * Implement the function "render" thatrender a MathExpr producing a string
+ * Implement the function "render" that renders a MathExpr producing a string (2 * 3 ...)
  */
 
 /**
