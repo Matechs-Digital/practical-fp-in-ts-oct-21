@@ -1,3 +1,4 @@
+import { Tagged } from "@effect-ts/core/Case"
 import { pipe } from "@effect-ts/system/Function"
 
 interface B {
@@ -92,30 +93,27 @@ export const shouldBeTrue = pipe(fromBoolean(true), invert, equal(fromBoolean(fa
  */
 export type MathExpr = Value | Add | Sub | Mul | Div
 
-export class Value {
-  readonly _tag = "Value"
-  constructor(readonly n: number) {}
-}
+export class Value extends Tagged("Value")<{ readonly n: number }> {}
 
-export class Add {
-  readonly _tag = "Add"
-  constructor(readonly left: MathExpr, readonly right: MathExpr) {}
-}
+export class Add extends Tagged("Add")<{
+  readonly left: MathExpr
+  readonly right: MathExpr
+}> {}
 
-export class Sub {
-  readonly _tag = "Sub"
-  constructor(readonly left: MathExpr, readonly right: MathExpr) {}
-}
+export class Sub extends Tagged("Sub")<{
+  readonly left: MathExpr
+  readonly right: MathExpr
+}> {}
 
-export class Mul {
-  readonly _tag = "Mul"
-  constructor(readonly left: MathExpr, readonly right: MathExpr) {}
-}
+export class Mul extends Tagged("Mul")<{
+  readonly left: MathExpr
+  readonly right: MathExpr
+}> {}
 
-export class Div {
-  readonly _tag = "Div"
-  constructor(readonly left: MathExpr, readonly right: MathExpr) {}
-}
+export class Div extends Tagged("Div")<{
+  readonly left: MathExpr
+  readonly right: MathExpr
+}> {}
 
 /**
  * Exercise:
@@ -124,23 +122,23 @@ export class Div {
  */
 
 export function fromNumber(n: number): MathExpr {
-  return new Value(n)
+  return new Value({ n })
 }
 
 export function add(that: MathExpr) {
-  return (self: MathExpr): MathExpr => new Add(self, that)
+  return (self: MathExpr): MathExpr => new Add({ left: self, right: that })
 }
 
 export function mul(that: MathExpr) {
-  return (self: MathExpr): MathExpr => new Mul(self, that)
+  return (self: MathExpr): MathExpr => new Mul({ left: self, right: that })
 }
 
 export function sub(that: MathExpr) {
-  return (self: MathExpr): MathExpr => new Sub(self, that)
+  return (self: MathExpr): MathExpr => new Sub({ left: self, right: that })
 }
 
 export function div(that: MathExpr) {
-  return (self: MathExpr): MathExpr => new Div(self, that)
+  return (self: MathExpr): MathExpr => new Div({ left: self, right: that })
 }
 
 /**
@@ -150,6 +148,7 @@ export function div(that: MathExpr) {
  */
 
 export const program = pipe(fromNumber(0), add(fromNumber(1)), mul(fromNumber(2)))
+export const program2 = pipe(fromNumber(0), add(fromNumber(1)), mul(fromNumber(2)))
 
 /**
  * Exercise:
