@@ -143,6 +143,7 @@ export function chain<A, B>(f: (a: A) => Expr<B>): (self: Expr<A>) => Expr<B> {
  * Implement the evaluate function
  */
 export function evaluate<A>(expr: Expr<A>): A {
+  // @ts-expect-error
   return pipe(
     expr,
     matchTag({

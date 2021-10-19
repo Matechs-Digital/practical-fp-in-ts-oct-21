@@ -7,7 +7,8 @@
  */
 
 import { identity, pipe } from "@effect-ts/core/Function"
-import { matchTag, Unify } from "@effect-ts/core/Utils"
+import type { Unify } from "@effect-ts/core/Utils"
+import { matchTag } from "@effect-ts/core/Utils"
 
 /**
  * Segment:

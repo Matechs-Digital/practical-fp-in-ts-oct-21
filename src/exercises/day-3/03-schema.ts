@@ -207,6 +207,7 @@ export interface Guard<A> {
 }
 
 export function guard<I, A>(self: Schema<I, A>): Guard<A> {
+  // @ts-expect-error
   return pipe(
     self,
     matchTag({
