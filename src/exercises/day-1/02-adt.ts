@@ -33,25 +33,31 @@
 /**
  * Exercise:
  *
- * Create constructors for all the members in MathExpr (pipeable)
+ * Create constructors & combinators for all the members in MathExpr (pipeable)
  */
 
 /**
  * Exercise:
  *
- * Create a small program using the MathExpr constructors
+ * Create a small program using the MathExpr module api
  */
 
 /**
  * Exercise:
  *
- * Implement the function evaluate MathExpr => number
+ * Implement the function "evaluate" that computes a MathExpr producing number
  */
 
 /**
  * Exercise:
  *
- * Write tests that assert correct behaviour of the evaluate function
+ * Implement the function "render" thatrender a MathExpr producing a string
+ */
+
+/**
+ * Exercise:
+ *
+ * Write tests that assert correct behaviour of the evaluate & render function
  */
 
 /**
@@ -63,7 +69,7 @@
 /**
  * Exercise:
  *
- * Model a portfolio of assets and write a pnl(portfolio) function that returns
+ * Model a portfolio of assets and write a pnl function that returns
  * the profit and losses of the portfolio, every asset can be either:
  * - Real Estate Property: purchase date, purchase price, current price
  * - Stock: purchase date, purchase price, cumulated dividends

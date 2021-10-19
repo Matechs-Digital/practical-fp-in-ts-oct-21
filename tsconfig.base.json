@@ -10,7 +10,7 @@
     "preserveSymlinks": true,
     "moduleResolution": "node",
     "noEmit": false,
-    "lib": ["es2020"],
+    "lib": ["es2020", "DOM"],
     "strict": true,
     "noImplicitReturns": false,
     "noUnusedLocals": true,

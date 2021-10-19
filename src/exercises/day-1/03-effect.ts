@@ -36,7 +36,8 @@ export const die = T.die("error")
 /**
  * Exercise:
  *
- * Test the output of the following program
+ * Test the output of the following program,
+ * you will need to use T.provideAll to provide the required environment
  */
 export const read = T.access((_: { input: string }) => _.input)
 
@@ -79,7 +80,6 @@ export const unit = T.unit
  *
  * Try and test the method T.chain
  */
-
 /**
  * Exercise:
  *
@@ -87,13 +87,11 @@ export const unit = T.unit
  * using Math.random and that fail with an InvalidNumber error in
  * case the number is < 0.5 and succeeds with the number otherwise
  */
-
 /**
  * Exercise:
  *
  * Try and test the method T.tap, improve the program above to use T.tap
  */
-
 /**
  * Exercise:
  *
@@ -101,14 +99,12 @@ export const unit = T.unit
  * Math.random to be a requirement (R) using T.accessM and provide the
  * dependency (mocked) in the test
  */
-
 /**
  * Exercise:
  *
  * Handle the InvalidRandom failure using T.catchAll returning 1 as success
  * in case of failures
  */
-
 /**
  * Exercise:
  *
@@ -124,25 +120,21 @@ export const unit = T.unit
  * 9) T.catchTag
  * 10) T.bracket
  */
-
 /**
  * Exercise:
  *
- * Write a program that generate 2 valid random numbers and returns the sum
+ * Write a program that generates 2 valid random numbers and returns the sum
  */
-
 /**
  * Exercise:
  *
  * Rewrite the same program using pipe(T.do, T.bind("a", () => ...), T.bind("b", () => ...), T.map)
  */
-
 /**
  * Exercise:
  *
  * Rewrite the same program using T.gen
  */
-
 /**
  * Exercise:
  *
@@ -156,6 +148,18 @@ export const unit = T.unit
  * 6) T.effectAsyncInterrupt
  * 7) T.delay
  * 8) T.sleep
+ */
+
+/**
+ * Exercise:
+ *
+ * Build a `fetch` wrapper that returns an effect. Use AbortController to handle the interruption.
+ */
+
+/**
+ * Exercise:
+ *
+ * Test a live call to https://jsonplaceholder.typicode.com/todos/1
  */
 
 /**

@@ -36,6 +36,8 @@
   },
   "dependencies": {
     "@effect-ts/core": "^0.45.0",
-    "@effect-ts/node": "^0.30.0"
+    "@effect-ts/node": "^0.30.0",
+    "abortcontroller-polyfill": "^1.7.3",
+    "isomorphic-fetch": "^3.0.0"
   }
 }
