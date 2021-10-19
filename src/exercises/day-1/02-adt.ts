@@ -156,6 +156,25 @@ export const program = pipe(fromNumber(0), add(fromNumber(1)), mul(fromNumber(2)
  *
  * Implement the function "evaluate" that computes a MathExpr producing number
  */
+export function evaluate(expr: MathExpr): number {
+  switch (expr._tag) {
+    case "Value": {
+      return expr.n
+    }
+    case "Add": {
+      return evaluate(expr.left) + evaluate(expr.right)
+    }
+    case "Mul": {
+      return evaluate(expr.left) * evaluate(expr.right)
+    }
+    case "Div": {
+      return evaluate(expr.left) / evaluate(expr.right)
+    }
+    case "Sub": {
+      return evaluate(expr.left) - evaluate(expr.right)
+    }
+  }
+}
 
 /**
  * Exercise:
