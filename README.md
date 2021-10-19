@@ -13,7 +13,7 @@ Upon completion of the course, you'll be able to:
 
 - Use the effect-ts library (and similar libraries such as fp-ts, qio, waveguide);
 - Build modern, high-performance, asynchronous and concurrent, resource-efficient, and stack-safe applications, both in the back-end (well-optimized for serverless) and front-end;
-  Implement best practices regarding error management and dependency management.
+- Implement best practices regarding error management and dependency management.
 
 ## Who is it for
 
