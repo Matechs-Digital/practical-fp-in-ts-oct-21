@@ -1,6 +1,7 @@
 import { Tagged } from "@effect-ts/core/Case"
-import { PlainArr } from "@effect-ts/system/Collections/Immutable/Chunk"
+import * as Chunk from "@effect-ts/core/Collections/Immutable/Chunk"
 import { pipe } from "@effect-ts/system/Function"
+import { matchTag } from "@effect-ts/system/Utils"
 
 interface B {
   _tag: "B"
@@ -241,7 +242,7 @@ export class ForeignCurrency extends Tagged("ForeignCurrency")<{
 }> {}
 
 export class Portfolio extends Tagged("Portfolio")<{
-  readonly assets: readonly AssetType[]
+  readonly assets: Chunk.Chunk<AssetType>
 }> {}
 
 export function realEstate(_: {
@@ -267,11 +268,11 @@ export function foreignCurrency(_: {
 }
 
 export function empty(): Portfolio {
-  return new Portfolio({ assets: [] })
+  return new Portfolio({ assets: Chunk.empty() })
 }
 
 export function addAsset(asset: AssetType): (self: Portfolio) => Portfolio {
-  return (self) => new Portfolio({ assets: [...self.assets, asset] })
+  return (self) => new Portfolio({ assets: Chunk.append_(self.assets, asset) })
 }
 
 export const portfolio = pipe(
@@ -280,3 +281,19 @@ export const portfolio = pipe(
   addAsset(foreignCurrency({ currentPrice: 1, purchasePrice: 0.9 })),
   addAsset(realEstate({ currentPrice: 1, purchasePrice: 0.9 }))
 )
+
+export function assetPnl(asset: AssetType): number {
+  return pipe(
+    asset,
+    matchTag({
+      Stock: ({ cumulatedDividends, currentPrice, purchasePrice }) =>
+        cumulatedDividends + (currentPrice - purchasePrice),
+      RealEstate: (asset) => asset.currentPrice - asset.purchasePrice,
+      ForeignCurrency: (asset) => asset.currentPrice - asset.purchasePrice
+    })
+  )
+}
+
+export function pnl(p: Portfolio): number {
+  return Chunk.reduce_(p.assets, 0, (c, asset) => c + assetPnl(asset))
+}

@@ -12,4 +12,7 @@ describe("Dummy", () => {
   it("render should be work", () => {
     expect(ADT.render(ADT.program)).toEqual("((0 + 1) * 2)")
   })
+  it("pnl of portfolio", () => {
+    expect(ADT.pnl(ADT.portfolio)).toEqual(0.29999999999999993)
+  })
 })
