@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@effect-ts/jest": "^0.31.0",
-    "@effect-ts/tracing-plugin": "^0.14.14",
+    "@effect-ts/tracing-plugin": "^0.14.15",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.10.3",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
