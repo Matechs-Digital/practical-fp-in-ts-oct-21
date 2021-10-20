@@ -207,6 +207,10 @@ export class FetchException extends Tagged("FetchException")<{
   readonly error: unknown
 }> {}
 
+export class MalformedJsonResponse extends Tagged("MalformedJsonResponse")<{
+  readonly error: unknown
+}> {}
+
 export const fetchRequest = T.tryCatchPromise(
   () => fetch("https://jsonplaceholder.typicode.com/todos/1"),
   (error) => new FetchException({ error })
@@ -261,6 +265,20 @@ export function _fetch(input: RequestInfo, init?: RequestInit) {
   })
 }
 
+export function _fetchJson(
+  input: RequestInfo,
+  init?: RequestInit
+): T.Effect<unknown, FetchException | MalformedJsonResponse, unknown> {
+  return pipe(
+    _fetch(input, init),
+    T.chain((res) =>
+      T.tryCatchPromise(
+        (): Promise<unknown> => res.json(),
+        (error) => new MalformedJsonResponse({ error })
+      )
+    )
+  )
+}
 /**
  * Exercise:
  *

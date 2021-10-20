@@ -102,6 +102,7 @@ describe("Effect day-2", () => {
 
     expect(Ex.untraced(res)).toEqual(Ex.die(new Error("ok")))
   })
+
   it("should test fetchRequest3", async () => {
     const fiber = pipe(Eff.fetchRequest3, T.runFiber)
 
@@ -110,5 +111,16 @@ describe("Effect day-2", () => {
     const res = await T.runPromiseExit(F.join(fiber))
 
     expect(Ex.interrupted(res)).toEqual(true)
+  })
+
+  it("should test _fetch", async () => {
+    const res = await pipe(
+      Eff._fetchJson("https://jsonplaceholder.typicode.com/todos/1"),
+      T.runPromiseExit
+    )
+
+    expect(Ex.untraced(res)).toEqual(
+      Ex.succeed({ completed: false, id: 1, title: "delectus aut autem", userId: 1 })
+    )
   })
 })
