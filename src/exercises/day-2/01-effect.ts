@@ -66,8 +66,10 @@ export class InvalidNumber extends Tagged("InvalidNumber")<{
   readonly invalidNumber: number
 }> {}
 
+const random = T.accessM((r: { random: T.UIO<number> }) => r.random)
+
 export const randomGteHalf = pipe(
-  T.succeedWith(() => Math.random()),
+  random,
   T.tap((n) =>
     T.when(() => n < 0.5)(T.failWith(() => new InvalidNumber({ invalidNumber: n })))
   )

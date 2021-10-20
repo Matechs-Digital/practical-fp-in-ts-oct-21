@@ -3,7 +3,6 @@ import * as T from "@effect-ts/core/Effect"
 import * as Ex from "@effect-ts/core/Effect/Exit"
 import * as Sc from "@effect-ts/core/Effect/Schedule"
 import { pipe } from "@effect-ts/core/Function"
-import { pretty } from "@effect-ts/system/Cause"
 
 describe("Effect day-2", () => {
   it("should test succeed throw case", async () => {
@@ -34,13 +33,26 @@ describe("Effect day-2", () => {
     const myPolicy = pipe(
       Sc.exponential(200),
       Sc.whileInput((n: Eff.InvalidNumber) => n.invalidNumber < 0.3)
+    )["&&"](Sc.recurs(2))
+
+    const res = await pipe(
+      Eff.randomGteHalf,
+      T.provideAll({ random: T.succeedWith(() => 0) }),
+      T.retry(myPolicy),
+      T.runPromiseExit
     )
-    const res = await pipe(Eff.randomGteHalf, T.retry(myPolicy), T.runPromiseExit)
 
-    if (res._tag === "Failure") {
-      console.log(pretty(res.cause))
-    }
+    expect(Ex.untraced(res)).toEqual(
+      Ex.fail(new Eff.InvalidNumber({ invalidNumber: 0 }))
+    )
 
-    expect(res._tag).toEqual("Success")
+    const res2 = await pipe(
+      Eff.randomGteHalf,
+      T.provideAll({ random: T.succeedWith(() => 1) }),
+      T.retry(myPolicy),
+      T.runPromiseExit
+    )
+
+    expect(Ex.untraced(res2)).toEqual(Ex.succeed(1))
   })
 })
