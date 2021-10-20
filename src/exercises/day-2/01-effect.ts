@@ -1,4 +1,5 @@
 import * as T from "@effect-ts/core/Effect"
+import { pipe } from "@effect-ts/system/Function"
 
 /**
  * Exercise:
@@ -36,12 +37,22 @@ export const unit = T.unit
  *
  * Try and test the method T.map
  */
+export const useMap = pipe(
+  T.succeed(1 as const),
+  T.map((n) => `got: ${n + 1}` as const)
+)
 
 /**
  * Exercise:
  *
  * Try and test the method T.chain
  */
+export const useChain = pipe(
+  T.succeed(1 as const),
+  T.chain((n) =>
+    T.accessM((_: { log: (_: string) => T.UIO<void> }) => _.log(`logging: ${n}`))
+  )
+)
 
 /**
  * Exercise:
