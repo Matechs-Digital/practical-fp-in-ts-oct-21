@@ -244,6 +244,23 @@ export const fetchRequest3 = T.effectAsyncInterrupt<unknown, never, void>((resum
  * Build a `fetch` wrapper that returns an effect. Use AbortController to handle the interruption.
  */
 
+export function _fetch(input: RequestInfo, init?: RequestInit) {
+  return T.effectAsyncInterrupt<unknown, FetchException, Response>((resume) => {
+    const abort = new AbortController()
+    fetch(input, { ...init, signal: abort.signal }).then(
+      (res) => {
+        resume(T.succeed(res))
+      },
+      (err) => {
+        resume(T.fail(new FetchException(err)))
+      }
+    )
+    return T.succeedWith(() => {
+      abort.abort()
+    })
+  })
+}
+
 /**
  * Exercise:
  *
