@@ -5,7 +5,10 @@ import * as T from "@effect-ts/core/Effect"
  *
  * Test the output of the following program
  */
-export const oneLazy = T.succeedWith(() => 1)
+export const oneLazy = T.succeedWith(() => {
+  throw new Error("here")
+  return 1
+})
 
 /**
  * Exercise:
