@@ -1,4 +1,5 @@
 import * as T from "@effect-ts/core/Effect"
+import * as Cause from "@effect-ts/core/Effect/Cause"
 import { Tagged } from "@effect-ts/system/Case"
 import { pipe } from "@effect-ts/system/Function"
 
@@ -95,6 +96,10 @@ export const randomGteHalf = pipe(
  * Handle the InvalidRandom failure using T.catchAll returning 1 as success
  * in case of failures
  */
+export const randomOrOne = pipe(
+  randomGteHalf,
+  T.catchTag("InvalidNumber", (_) => T.succeedWith(() => 1))
+)
 
 /**
  * Exercise:
@@ -111,6 +116,16 @@ export const randomGteHalf = pipe(
  * 9) T.catchTag
  * 10) T.bracket
  */
+
+export const randomOrOne2 = pipe(
+  randomGteHalf,
+  T.orDie,
+  T.catchAllCause((_) =>
+    Cause.defects(_).findIndex((x) => x instanceof InvalidNumber) >= 0
+      ? T.succeedWith(() => 1)
+      : T.halt(_)
+  )
+)
 
 /**
  * Exercise:
