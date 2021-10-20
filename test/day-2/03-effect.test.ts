@@ -31,11 +31,11 @@ describe("Effect day-2", () => {
     expect(messages).toEqual(["logging: 1", "logging: 1", "logging: 1"])
   })
   it("should test random", async () => {
-    const res = await pipe(
-      Eff.randomGteHalf,
-      T.retry(Sc.recurs(10)["&&"](Sc.exponential(100))),
-      T.runPromiseExit
+    const myPolicy = pipe(
+      Sc.exponential(200),
+      Sc.whileInput((n: Eff.InvalidNumber) => n.invalidNumber < 0.3)
     )
+    const res = await pipe(Eff.randomGteHalf, T.retry(myPolicy), T.runPromiseExit)
 
     if (res._tag === "Failure") {
       console.log(pretty(res.cause))
