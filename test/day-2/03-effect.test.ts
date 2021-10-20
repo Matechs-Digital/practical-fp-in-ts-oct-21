@@ -64,4 +64,13 @@ describe("Effect day-2", () => {
 
     expect(Ex.untraced(res)).toEqual(Ex.succeed(1))
   })
+  it("should test randomOutput2", async () => {
+    const res = await pipe(
+      Eff.randomOutput2,
+      T.provideAll({ random: T.succeedWith(() => 0) }),
+      T.runPromise
+    )
+
+    expect(res).toContain("I've got a failure")
+  })
 })

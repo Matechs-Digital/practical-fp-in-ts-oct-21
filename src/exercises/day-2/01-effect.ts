@@ -1,5 +1,6 @@
 import * as T from "@effect-ts/core/Effect"
 import * as Cause from "@effect-ts/core/Effect/Cause"
+import { pretty } from "@effect-ts/core/Effect/Cause"
 import { Tagged } from "@effect-ts/system/Case"
 import { pipe } from "@effect-ts/system/Function"
 
@@ -124,6 +125,22 @@ export const randomOrOne2 = pipe(
     Cause.defects(_).findIndex((x) => x instanceof InvalidNumber) >= 0
       ? T.succeedWith(() => 1)
       : T.halt(_)
+  )
+)
+
+export const randomOutput = pipe(
+  randomGteHalf,
+  T.foldM(
+    (_) => T.succeedWith(() => `I've got an invalid number: ${_.invalidNumber}`),
+    (_) => T.succeedWith(() => `I've got: ${_}`)
+  )
+)
+
+export const randomOutput2 = pipe(
+  randomGteHalf,
+  T.foldCauseM(
+    (_) => T.succeedWith(() => `I've got a failure: ${pretty(_)}`),
+    (_) => T.succeedWith(() => `I've got: ${_}`)
   )
 )
 
