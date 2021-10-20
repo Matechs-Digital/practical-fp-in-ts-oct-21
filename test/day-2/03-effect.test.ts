@@ -1,7 +1,9 @@
 import * as Eff from "@app/exercises/day-2/01-effect"
 import * as T from "@effect-ts/core/Effect"
 import * as Ex from "@effect-ts/core/Effect/Exit"
+import * as Sc from "@effect-ts/core/Effect/Schedule"
 import { pipe } from "@effect-ts/core/Function"
+import { pretty } from "@effect-ts/system/Cause"
 
 describe("Effect day-2", () => {
   it("should test succeed throw case", async () => {
@@ -27,5 +29,18 @@ describe("Effect day-2", () => {
     )
     expect(res).toEqual(Ex.unit)
     expect(messages).toEqual(["logging: 1", "logging: 1", "logging: 1"])
+  })
+  it("should test random", async () => {
+    const res = await pipe(
+      Eff.randomGteHalf,
+      T.retry(Sc.recurs(10)["&&"](Sc.exponential(100))),
+      T.runPromiseExit
+    )
+
+    if (res._tag === "Failure") {
+      console.log(pretty(res.cause))
+    }
+
+    expect(res._tag).toEqual("Success")
   })
 })

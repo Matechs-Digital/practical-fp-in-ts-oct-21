@@ -1,4 +1,5 @@
 import * as T from "@effect-ts/core/Effect"
+import { Tagged } from "@effect-ts/system/Case"
 import { pipe } from "@effect-ts/system/Function"
 
 /**
@@ -61,6 +62,16 @@ export const useChain = pipe(
  * using Math.random and that fail with an InvalidNumber error in
  * case the number is < 0.5 and succeeds with the number otherwise
  */
+export class InvalidNumber extends Tagged("InvalidNumber")<{
+  readonly invalidNumber: number
+}> {}
+
+export const randomGteHalf = pipe(
+  T.succeedWith(() => Math.random()),
+  T.tap((n) =>
+    T.when(() => n < 0.5)(T.failWith(() => new InvalidNumber({ invalidNumber: n })))
+  )
+)
 
 /**
  * Exercise:
