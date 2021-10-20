@@ -73,4 +73,32 @@ describe("Effect day-2", () => {
 
     expect(res).toContain("I've got a failure")
   })
+  it("should test result", async () => {
+    const res = await pipe(
+      Eff.randomGteHalf,
+      T.result,
+      T.provideAll({ random: T.succeedWith(() => 1) }),
+      T.runPromise
+    )
+
+    expect(res).toEqual(Ex.succeed(1))
+  })
+  it("should test bracket", async () => {
+    const res = await pipe(
+      T.succeedWith(() => [] as string[]),
+      T.bracket(
+        (_) =>
+          T.succeedWith(() => {
+            _.push("a", "b", "c")
+          }),
+        (_) =>
+          T.succeedWith(() => {
+            throw new Error("ok")
+          })
+      ),
+      T.runPromiseExit
+    )
+
+    expect(Ex.untraced(res)).toEqual(Ex.die(new Error("ok")))
+  })
 })

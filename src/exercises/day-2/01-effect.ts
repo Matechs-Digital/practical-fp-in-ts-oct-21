@@ -149,6 +149,15 @@ export const randomOutput2 = pipe(
  *
  * Write a program that generates 2 valid random numbers and returns the sum
  */
+export const randomSum = pipe(
+  randomGteHalf,
+  T.chain((x) =>
+    pipe(
+      randomGteHalf,
+      T.map((y) => x + y)
+    )
+  )
+)
 
 /**
  * Exercise:
@@ -156,11 +165,29 @@ export const randomOutput2 = pipe(
  * Rewrite the same program using pipe(T.do, T.bind("a", () => ...), T.bind("b", () => ...), T.map)
  */
 
-/**
- * Exercise:
- *
- * Rewrite the same program using T.gen
- */
+export const randomSum2 = pipe(
+  T.do,
+  T.bind("x", () => randomGteHalf),
+  T.bind("y", () => randomGteHalf),
+  T.bind("z", () => randomGteHalf),
+  T.bind("r", ({ x, y, z }) => T.succeedWith(() => x + y + z)),
+  T.map((_) => _.r)
+)
+
+export const res = T.gen(function* (_) {
+  const x = yield* _(randomGteHalf)
+  const y = yield* _(randomGteHalf)
+  const z = yield* _(randomGteHalf)
+  const r = yield* _(T.succeedWith(() => x + y + z))
+  while ((yield* _(randomGteHalf)) > 0) {
+    yield* _(
+      T.succeedWith(() => {
+        console.log("ok")
+      })
+    )
+  }
+  return r
+})
 
 /**
  * Exercise:
@@ -176,6 +203,26 @@ export const randomOutput2 = pipe(
  * 7) T.delay
  * 8) T.sleep
  */
+export class FetchException extends Tagged("FetchException")<{
+  readonly error: unknown
+}> {}
+
+export const fetchRequest = T.tryCatchPromise(
+  () => fetch("https://jsonplaceholder.typicode.com/todos/1"),
+  (error) => new FetchException({ error })
+)
+
+export const fetchRequest2 = T.effectAsync<unknown, FetchException, Response>(
+  (resume) => {
+    fetch("https://jsonplaceholder.typicode.com/todos/1")
+      .then((res) => {
+        resume(T.succeed(res))
+      })
+      .catch((error) => {
+        resume(T.fail(new FetchException({ error })))
+      })
+  }
+)
 
 /**
  * Exercise:
