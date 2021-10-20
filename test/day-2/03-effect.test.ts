@@ -1,6 +1,7 @@
 import * as Eff from "@app/exercises/day-2/01-effect"
 import * as T from "@effect-ts/core/Effect"
 import * as Ex from "@effect-ts/core/Effect/Exit"
+import * as F from "@effect-ts/core/Effect/Fiber"
 import * as Sc from "@effect-ts/core/Effect/Schedule"
 import { pipe } from "@effect-ts/core/Function"
 
@@ -100,5 +101,14 @@ describe("Effect day-2", () => {
     )
 
     expect(Ex.untraced(res)).toEqual(Ex.die(new Error("ok")))
+  })
+  it("should test fetchRequest3", async () => {
+    const fiber = pipe(Eff.fetchRequest3, T.runFiber)
+
+    await T.runPromise(F.interrupt(fiber))
+
+    const res = await T.runPromiseExit(F.join(fiber))
+
+    expect(Ex.interrupted(res)).toEqual(true)
   })
 })

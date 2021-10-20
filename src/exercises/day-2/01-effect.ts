@@ -214,15 +214,29 @@ export const fetchRequest = T.tryCatchPromise(
 
 export const fetchRequest2 = T.effectAsync<unknown, FetchException, Response>(
   (resume) => {
-    fetch("https://jsonplaceholder.typicode.com/todos/1")
-      .then((res) => {
+    fetch("https://jsonplaceholder.typicode.com/todos/1").then(
+      (res) => {
         resume(T.succeed(res))
-      })
-      .catch((error) => {
+      },
+      (error) => {
         resume(T.fail(new FetchException({ error })))
-      })
+      }
+    )
   }
 )
+
+export const fetchRequest3 = T.effectAsyncInterrupt<unknown, never, void>((resume) => {
+  console.log("STARTED")
+  const timer = setTimeout(() => {
+    resume(T.unit)
+    console.log("HERE")
+  }, 100)
+
+  return T.succeedWith(() => {
+    clearTimeout(timer)
+    console.log("INTERRUPTED")
+  })
+})
 
 /**
  * Exercise:
