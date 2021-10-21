@@ -1,3 +1,12 @@
+/**
+ * Exercise:
+ *
+ * Test the following functions:
+ *
+ * 1) T.forEach
+ * 2) T.forEachPar
+ * 3) T.forEachParN
+ */
 import * as T from "@effect-ts/core/Effect"
 import * as Cause from "@effect-ts/core/Effect/Cause"
 import { pretty } from "@effect-ts/core/Effect/Cause"
@@ -279,32 +288,3 @@ export function _fetchJson(
     )
   )
 }
-
-/**
- * Exercise:
- *
- * Test a live call to https://jsonplaceholder.typicode.com/todos/1
- */
-
-/**
- * Exercise:
- *
- * Test the following functions:
- *
- * 1) T.tuple
- * 2) T.tuplePar
- * 3) T.tupleParN
- * 4) T.struct
- * 5) T.structPar
- * 6) T.structParN
- */
-
-/**
- * Exercise:
- *
- * Test the following functions:
- *
- * 1) T.forEach
- * 2) T.forEachPar
- * 3) T.forEachParN
- */
