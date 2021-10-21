@@ -1,11 +1,10 @@
 /**
  * Exercise:
  *
- * Import the module `import * as L from "@effect-ts/core/Effect/Layer"` and test M.fromEffect,
+ * Import the module `import * as L from "@effect-ts/core/Effect/Layer"`,
  *
  * note: you provide a layer to an effect using T.provideSomeLayer (where T is the Effect module)
  */
-
 /**
  * Exercise:
  *
@@ -17,6 +16,19 @@
  * >+> operator
  * <+< operator
  */
+import * as T from "@effect-ts/core/Effect"
+import * as L from "@effect-ts/core/Effect/Layer"
+
+import { ConsoleService } from "./02-services"
+
+export const LiveConsole = L.fromEffect(ConsoleService)(
+  T.succeedWith(() => ({
+    log: (msg) =>
+      T.succeedWith(() => {
+        console.log(msg)
+      })
+  }))
+)
 
 /**
  * Exercise:

@@ -29,7 +29,7 @@
  */
 import { Tagged } from "@effect-ts/core/Case"
 import * as T from "@effect-ts/core/Effect"
-import { pipe } from "@effect-ts/core/Function"
+import { flow, pipe } from "@effect-ts/core/Function"
 import type { Has } from "@effect-ts/core/Has"
 import { tag } from "@effect-ts/core/Has"
 
@@ -152,4 +152,27 @@ export const provideLiveRandomGeneratorService = T.provideService(
   random: T.succeedWith(() => Math.random())
 })
 
-export const main = pipe(program, provideLiveRandomGeneratorService)
+export const provideLiveConsoleService = T.provideService(ConsoleService)({
+  log: (msg) =>
+    T.succeedWith(() => {
+      console.log(msg)
+    })
+})
+
+export const provideLiveLoggerService = T.provideServiceM(LoggerService)(
+  T.gen(function* (_) {
+    const { log } = yield* _(ConsoleService)
+
+    return {
+      info: (msg) => log(`[info]: ${msg}`)
+    }
+  })
+)
+
+export const main = pipe(
+  program,
+  provideLiveRandomGeneratorService,
+  provideLiveLoggerService,
+  provideLiveConsoleService,
+  T.runPromise
+)
