@@ -279,6 +279,7 @@ export function _fetchJson(
     )
   )
 }
+
 /**
  * Exercise:
  *

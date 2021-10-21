@@ -1,4 +1,6 @@
 import * as Eff from "@app/exercises/day-2/01-effect"
+import * as Chunk from "@effect-ts/core/Collections/Immutable/Chunk"
+import * as Tp from "@effect-ts/core/Collections/Immutable/Tuple"
 import * as T from "@effect-ts/core/Effect"
 import * as Ex from "@effect-ts/core/Effect/Exit"
 import * as F from "@effect-ts/core/Effect/Fiber"
@@ -121,6 +123,96 @@ describe("Effect day-2", () => {
 
     expect(Ex.untraced(res)).toEqual(
       Ex.succeed({ completed: false, id: 1, title: "delectus aut autem", userId: 1 })
+    )
+  })
+
+  it("should test tuple", async () => {
+    const res = await pipe(
+      T.tupleParN(2)(
+        Eff._fetchJson("https://jsonplaceholder.typicode.com/todos/1"),
+        Eff._fetchJson("https://jsonplaceholder.typicode.com/todos/2"),
+        Eff._fetchJson("https://jsonplaceholder.typicode.com/todos/3")
+      ),
+      T.runPromiseExit
+    )
+
+    expect(Ex.untraced(res)).toEqual(
+      Ex.succeed(
+        Tp.tuple(
+          { completed: false, id: 1, title: "delectus aut autem", userId: 1 },
+          {
+            completed: false,
+            id: 2,
+            title: "quis ut nam facilis et officia qui",
+            userId: 1
+          },
+          {
+            completed: false,
+            id: 3,
+            title: "fugiat veniam minus",
+            userId: 1
+          }
+        )
+      )
+    )
+  })
+
+  it("should test struct", async () => {
+    const res = await pipe(
+      T.structParN(2)({
+        a: Eff._fetchJson("https://jsonplaceholder.typicode.com/todos/1"),
+        b: Eff._fetchJson("https://jsonplaceholder.typicode.com/todos/2"),
+        c: Eff._fetchJson("https://jsonplaceholder.typicode.com/todos/3")
+      }),
+      T.runPromiseExit
+    )
+
+    expect(Ex.untraced(res)).toEqual(
+      Ex.succeed({
+        a: { completed: false, id: 1, title: "delectus aut autem", userId: 1 },
+        b: {
+          completed: false,
+          id: 2,
+          title: "quis ut nam facilis et officia qui",
+          userId: 1
+        },
+        c: {
+          completed: false,
+          id: 3,
+          title: "fugiat veniam minus",
+          userId: 1
+        }
+      })
+    )
+  })
+
+  it("should test tuple", async () => {
+    const res = await pipe(
+      Chunk.from([1, 2, 3, 4, 5]),
+      T.forEachParN(2, (n) =>
+        Eff._fetchJson(`https://jsonplaceholder.typicode.com/todos/${n}`)
+      ),
+      T.runPromiseExit
+    )
+
+    expect(Ex.untraced(res)).toEqual(
+      Ex.succeed(
+        Tp.tuple(
+          { completed: false, id: 1, title: "delectus aut autem", userId: 1 },
+          {
+            completed: false,
+            id: 2,
+            title: "quis ut nam facilis et officia qui",
+            userId: 1
+          },
+          {
+            completed: false,
+            id: 3,
+            title: "fugiat veniam minus",
+            userId: 1
+          }
+        )
+      )
     )
   })
 })
