@@ -28,7 +28,7 @@
  * 4) div (takes 2 numbers and return T.IO<DivisionByZero, number> of the division)
  */
 import { Tagged } from "@effect-ts/core/Case"
-import type * as T from "@effect-ts/core/Effect"
+import * as T from "@effect-ts/core/Effect"
 import { tag } from "@effect-ts/core/Has"
 
 export class DivisionByZero extends Tagged("DivisionByZero")<{}> {}
@@ -48,7 +48,11 @@ export const MathService = tag<MathService>()
  * Create a tag for the MathService named MathService using `tag<MathService>()` from @effect-ts/core/Has
  */
 
-export const add = (x: number, y: number) => void 0
+export const { add, div, mul, sub } = T.deriveLifted(MathService)(
+  ["add", "div", "mul", "sub"],
+  [],
+  []
+)
 
 /**
  * Exercise:
