@@ -29,11 +29,13 @@
  */
 import { Tagged } from "@effect-ts/core/Case"
 import * as T from "@effect-ts/core/Effect"
+import { pipe } from "@effect-ts/core/Function"
 import { tag } from "@effect-ts/core/Has"
 
 export class DivisionByZero extends Tagged("DivisionByZero")<{}> {}
 
 export interface MathService {
+  n: number
   add(x: number, y: number): T.Effect<unknown, never, number>
   mul(x: number, y: number): T.Effect<unknown, never, number>
   sub(x: number, y: number): T.Effect<unknown, never, number>
@@ -53,6 +55,18 @@ export const { add, div, mul, sub } = T.deriveLifted(MathService)(
   [],
   []
 )
+
+export function calculate(n: number) {
+  return pipe(
+    T.do,
+    T.bind("x", () => div(100, n)),
+    T.bind("y", () => add(100, n)),
+    T.bind("z", () => sub(100, n)),
+    T.bind("h", ({ x, y }) => sub(x, y)),
+    T.bind("s", ({ h, z }) => mul(z, h)),
+    T.map(({ h }) => h)
+  )
+}
 
 /**
  * Exercise:
