@@ -23,3 +23,11 @@
  *
  * Model the dependency tree of the program built in the previous model using layers
  */
+
+/**
+ * Extension:
+ *
+ * Implement a logger that writes all messages into a file
+ *
+ * Note: a file is a resource that should be opened before your program runs and closed after
+ */
