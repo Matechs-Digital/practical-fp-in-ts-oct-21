@@ -77,7 +77,11 @@ export class InvalidNumber extends Tagged("InvalidNumber")<{
   readonly invalidNumber: number
 }> {}
 
-const random = T.accessM((r: { random: T.UIO<number> }) => r.random)
+interface RandomGeneratorService {
+  random: T.UIO<number>
+}
+
+const random = T.accessM((r: RandomGeneratorService) => r.random)
 
 export const randomGteHalf = pipe(
   random,

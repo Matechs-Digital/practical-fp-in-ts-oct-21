@@ -27,13 +27,28 @@
  * 3) sub (takes 2 numbers and return T.UIO<number> of the difference)
  * 4) div (takes 2 numbers and return T.IO<DivisionByZero, number> of the division)
  */
-export interface MathService {}
+import { Tagged } from "@effect-ts/core/Case"
+import type * as T from "@effect-ts/core/Effect"
+import { tag } from "@effect-ts/core/Has"
+
+export class DivisionByZero extends Tagged("DivisionByZero")<{}> {}
+
+export interface MathService {
+  add(x: number, y: number): T.Effect<unknown, never, number>
+  mul(x: number, y: number): T.Effect<unknown, never, number>
+  sub(x: number, y: number): T.Effect<unknown, never, number>
+  div(x: number, y: number): T.Effect<unknown, DivisionByZero, number>
+}
+
+export const MathService = tag<MathService>()
 
 /**
  * Exercise:
  *
  * Create a tag for the MathService named MathService using `tag<MathService>()` from @effect-ts/core/Has
  */
+
+export const add = (x: number, y: number) => void 0
 
 /**
  * Exercise:
