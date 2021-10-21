@@ -145,3 +145,11 @@ export const program = T.gen(function* (_) {
 
   return x
 })
+
+export const provideLiveRandomGeneratorService = T.provideService(
+  RandomGeneratorService
+)({
+  random: T.succeedWith(() => Math.random())
+})
+
+export const main = pipe(program, provideLiveRandomGeneratorService)
