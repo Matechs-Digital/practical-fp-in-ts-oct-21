@@ -47,13 +47,9 @@ export const managedArray = pipe(
 )
 
 export const programDependencies = pipe(
-  managedArray,
-  M.chain((resourceA) =>
-    pipe(
-      managedArray,
-      M.map((resourceB) => ({ resourceA, resourceB }))
-    )
-  )
+  M.do,
+  M.bind("resourceA", () => managedArray),
+  M.bind("resourceB", () => managedArray)
 )
 
 export const programUsingManagedArray = pipe(
