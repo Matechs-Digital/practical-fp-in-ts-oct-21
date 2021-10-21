@@ -9,41 +9,43 @@
  * Managed can be used, for example, to represent things like database connections, when used Managed makes sure to always run finalisation
  * while keeping track of all errors while they happen.
  */
-// start recording
+
 /**
  * Exercise:
  *
- * Import the module `import * as M from "@effect-ts/core/Effect/Managed"` and test M.makeExit,
- * to use a managed you will need pipe(managed, M.use((resource) => effect))
- */
-/**
- * Exercise:
+ * Import the module `import * as M from "@effect-ts/core/Effect/Managed"`
  *
  * The functions available in the module mirror closely the ones available in Effect, give a try to:
  *
  * 1) M.fromEffect
  * 2) M.makeExit
- * 2) M.map
- * 3) M.chain
- * 4) M.catchAll
- * 5) M.foldM
- * 6) M.access
- * 7) M.accessM
- * 8) M.provide
- * 9) M.gen (also supports running Effect directly)
+ * 3) M.map
+ * 4) M.chain
+ * 5) M.catchAll
+ * 6) M.foldM
+ * 7) M.access
+ * 8) M.accessM
+ * 9) M.provide
+ * 10) M.gen (also supports running Effect directly)
+ *
+ * Note: to use a managed you will need pipe(managed, M.use((resource) => effect))
  */
 
 import * as T from "@effect-ts/core/Effect"
 import * as M from "@effect-ts/core/Effect/Managed"
+import * as R from "@effect-ts/core/Effect/Random"
 import { pipe } from "@effect-ts/core/Function"
+import type { Has } from "@effect-ts/core/Has"
 
-export const managedArray = pipe(
-  T.succeedWith((): string[] => []),
+export const managedArray: M.Managed<Has<R.Random>, string, string[]> = pipe(
+  R.nextIntBetween(0, 100),
+  T.chain((n) => (n < 50 ? T.fail("error") : T.succeedWith((): string[] => []))),
   M.makeExit((resource) =>
     T.succeedWith(() => {
       console.log(resource.splice(0))
     })
-  )
+  ),
+  M.catchAll(() => managedArray)
 )
 
 export const programDependencies = pipe(
