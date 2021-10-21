@@ -43,23 +43,31 @@ export const managedArray = pipe(
     T.succeedWith(() => {
       console.log(resource.splice(0))
     })
-  ),
-  M.map((a) => ({ resourceA: a }))
+  )
+)
+
+export const programDependencies = pipe(
+  managedArray,
+  M.chain((resourceA) =>
+    pipe(
+      managedArray,
+      M.map((resourceB) => ({ resourceA, resourceB }))
+    )
+  )
 )
 
 export const programUsingManagedArray = pipe(
-  managedArray,
-  M.use(({ resourceA }) =>
-    pipe(
-      T.tuple(
-        T.succeedWith(() => {
-          resourceA.push("message1")
-        }),
-        T.succeedWith(() => {
-          resourceA.push("message2")
-        })
-      ),
-      T.map((): readonly string[] => [...resourceA])
+  programDependencies,
+  M.use(({ resourceA, resourceB }) =>
+    T.tuple(
+      T.succeedWith(() => {
+        resourceA.push("message 1 for A")
+        resourceB.push("message 1 for B")
+      }),
+      T.succeedWith(() => {
+        resourceA.push("message 2 for A")
+        resourceB.push("message 2 for B")
+      })
     )
   )
 )
