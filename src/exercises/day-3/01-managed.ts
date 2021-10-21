@@ -48,11 +48,12 @@ export const managedArray: M.Managed<Has<R.Random>, string, string[]> = pipe(
   M.catchAll(() => managedArray)
 )
 
-export const programDependencies = pipe(
-  M.do,
-  M.bind("resourceA", () => managedArray),
-  M.bind("resourceB", () => managedArray)
-)
+export const programDependencies = M.gen(function* (_) {
+  const resourceA = yield* _(managedArray)
+  const resourceB = yield* _(managedArray)
+
+  return { resourceA, resourceB }
+})
 
 export const programUsingManagedArray = pipe(
   programDependencies,
