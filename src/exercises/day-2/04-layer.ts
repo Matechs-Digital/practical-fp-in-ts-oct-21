@@ -9,16 +9,17 @@
 /**
  * Exercise:
  *
- * Inspect the module functions and operators testing behaviour 1-by-1
+ * Test the following functions:
+ *
+ * L.fromEffect
+ * L.fromManaged
+ * +++ operator
+ * >+> operator
+ * <+< operator
  */
 
 /**
  * Exercise:
  *
- * Rewrite day-1 graduation exercise using Layers to bootstrap services.
- *
- * Create 3 services:
- * - ConsoleService
- * - LoggerService depends on ConsoleService
- * - RandomGeneratorService
+ * Model the dependency tree of the program built in the previous model using layers
  */

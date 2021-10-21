@@ -29,10 +29,6 @@
  * 5) M.foldM
  * 6) M.access
  * 7) M.accessM
- * 8) M.accessService
- * 9) M.accessServiceM
- * 10) M.provide
- * 11) M.provideService
- * 12) M.provideServiceM
- * 13) M.gen (also supports running Effect directly)
+ * 8) M.provide
+ * 9) M.gen (also supports running Effect directly)
  */

@@ -63,8 +63,8 @@ export interface MathService {}
  * Graduation:
  *
  * We want to create a small program that firstly generates a random integer using RandomGeneratorService
- * then if the number is more then 0.5 continues by logging it using ConsoleService if it is less than 0.5
- * it returns a failure of InvalidRandom.
+ * then if the number is greater then 0.5 continues by logging it using the LoggerService (that depends on ConsoleService)
+ * if it is less than 0.5 it returns a failure of InvalidRandom.
  *
  * While writing the program test all the possible outcomes.
  */
