@@ -30,7 +30,10 @@
 import { Tagged } from "@effect-ts/core/Case"
 import * as T from "@effect-ts/core/Effect"
 import { pipe } from "@effect-ts/core/Function"
+import type { Has } from "@effect-ts/core/Has"
 import { tag } from "@effect-ts/core/Has"
+
+import { InvalidNumber } from "../day-2/01-effect"
 
 export class DivisionByZero extends Tagged("DivisionByZero")<{}> {}
 
@@ -57,15 +60,17 @@ export const { add, div, mul, sub } = T.deriveLifted(MathService)(
 )
 
 export function calculate(n: number) {
-  return pipe(
-    T.do,
-    T.bind("x", () => div(100, n)),
-    T.bind("y", () => add(100, n)),
-    T.bind("z", () => sub(100, n)),
-    T.bind("h", ({ x, y }) => sub(x, y)),
-    T.bind("s", ({ h, z }) => mul(z, h)),
-    T.map(({ h }) => h)
-  )
+  return T.gen(function* (_) {
+    const math = yield* _(MathService)
+
+    const x = yield* _(math.div(100, n))
+    const y = yield* _(math.add(100, n))
+    const z = yield* _(math.sub(100, n))
+    const h = yield* _(math.sub(x, y))
+    const s = yield* _(math.mul(h, z))
+
+    return s
+  })
 }
 
 /**
@@ -101,3 +106,42 @@ export function calculate(n: number) {
  *
  * While writing the program test all the possible outcomes.
  */
+
+export interface ConsoleService {
+  log(msg: string): T.Effect<unknown, never, void>
+}
+
+export const ConsoleService = tag<ConsoleService>()
+export const { log } = T.deriveLifted(ConsoleService)(["log"], [], [])
+
+export interface LoggerService {
+  info(msg: string): T.Effect<unknown, never, void>
+}
+
+export const LoggerService = tag<LoggerService>()
+export const { info } = T.deriveLifted(LoggerService)(["info"], [], [])
+
+export interface RandomGeneratorService {
+  random: T.Effect<unknown, never, number>
+}
+
+export const RandomGeneratorService = tag<RandomGeneratorService>()
+export const { random } = T.deriveLifted(RandomGeneratorService)([], ["random"], [])
+
+export class InvalidRandom extends Tagged("InvalidRandom")<{
+  readonly invalidRandom: number
+}> {}
+
+export const program = T.gen(function* (_) {
+  const x = yield* _(random)
+
+  yield* _(
+    T.if_(
+      x >= 0.5,
+      () => info(`got number: ${x}`),
+      () => T.fail(new InvalidNumber({ invalidNumber: x }))
+    )
+  )
+
+  return x
+})
