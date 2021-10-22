@@ -29,11 +29,7 @@
  */
 import { Tagged } from "@effect-ts/core/Case"
 import * as T from "@effect-ts/core/Effect"
-import { flow, pipe } from "@effect-ts/core/Function"
-import type { Has } from "@effect-ts/core/Has"
 import { tag } from "@effect-ts/core/Has"
-
-import { InvalidNumber } from "../day-2/01-effect"
 
 export class DivisionByZero extends Tagged("DivisionByZero")<{}> {}
 
