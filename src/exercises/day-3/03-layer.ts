@@ -19,9 +19,12 @@
 import { Tagged } from "@effect-ts/core/Case"
 import * as T from "@effect-ts/core/Effect"
 import * as L from "@effect-ts/core/Effect/Layer"
+import * as M from "@effect-ts/core/Effect/Managed"
 import { pipe } from "@effect-ts/core/Function"
 import { tag } from "@effect-ts/core/Has"
+import * as R from "@effect-ts/node/Runtime"
 import type { _A } from "@effect-ts/system/Utils"
+import * as fs from "fs"
 
 /**
  * Exercise:
@@ -98,8 +101,34 @@ export const LiveLogger = L.fromEffect(LoggerService)(
   })
 )
 
+export const LiveLoggerToFile = L.fromManaged(LoggerService)(
+  M.gen(function* (_) {
+    const stream = yield* _(
+      pipe(
+        T.succeedWith(() => fs.createWriteStream("output.log", { flags: "a" })),
+        M.makeExit((stream) =>
+          T.effectAsync((resume) => {
+            stream.on("finish", () => {
+              resume(T.unit)
+            })
+            stream.end()
+          })
+        )
+      )
+    )
+
+    return {
+      info: (msg) =>
+        T.succeedWith(() => stream.write(Buffer.from(`[info]: ${msg}\n`, "utf-8")))
+    }
+  })
+)
+
 export const ConsoleBasedLogger = LiveConsole[">>>"](LiveLogger)
 
-export const AppDependencies = LiveRandom["+++"](ConsoleBasedLogger)
+export const AppDependencies = LiveRandom["+++"](LiveLoggerToFile)
 
-export const main = pipe(program, T.provideSomeLayer(AppDependencies), T.runPromise)
+export const main = pipe(program, T.provideSomeLayer(AppDependencies))
+
+// unsafe
+R.runMain(main)
