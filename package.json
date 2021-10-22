@@ -35,7 +35,7 @@
     "yarn-deduplicate": "^3.1.0"
   },
   "dependencies": {
-    "@effect-ts/core": "^0.45.2",
+    "@effect-ts/core": "^0.45.4",
     "@effect-ts/node": "^0.30.0",
     "abortcontroller-polyfill": "^1.7.3",
     "isomorphic-fetch": "^3.0.0"
