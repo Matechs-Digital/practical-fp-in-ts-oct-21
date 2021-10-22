@@ -64,3 +64,10 @@ export class Rover extends Tagged("Rover")<{
   readonly position: Position
   readonly orientation: Orientation
 }> {}
+
+export class TurnLeft extends Tagged("TurnLeft")<{}> {}
+export class TurnRight extends Tagged("TurnRight")<{}> {}
+export class GoForward extends Tagged("GoForward")<{}> {}
+export class GoBackward extends Tagged("GoBackward")<{}> {}
+
+export type Command = TurnLeft | TurnRight | GoForward | GoBackward
