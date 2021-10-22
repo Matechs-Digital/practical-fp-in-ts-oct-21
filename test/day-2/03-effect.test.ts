@@ -186,9 +186,9 @@ describe("Effect day-2", () => {
     )
   })
 
-  it("should test tuple", async () => {
+  it("should test forEachParN", async () => {
     const res = await pipe(
-      Chunk.from([1, 2, 3, 4, 5]),
+      Chunk.from([1, 2, 3]),
       T.forEachParN(2, (n) =>
         Eff._fetchJson(`https://jsonplaceholder.typicode.com/todos/${n}`)
       ),
@@ -197,7 +197,7 @@ describe("Effect day-2", () => {
 
     expect(Ex.untraced(res)).toEqual(
       Ex.succeed(
-        Tp.tuple(
+        Chunk.from([
           { completed: false, id: 1, title: "delectus aut autem", userId: 1 },
           {
             completed: false,
@@ -211,7 +211,7 @@ describe("Effect day-2", () => {
             title: "fugiat veniam minus",
             userId: 1
           }
-        )
+        ])
       )
     )
   })
