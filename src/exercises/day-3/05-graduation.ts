@@ -76,6 +76,13 @@ export type Command = TurnLeft | TurnRight | GoForward | GoBackward
 export function mod(x: Int, y: Int): Int {
   return Math.abs(x % y) as Int
 }
+export function add(x: Int, y: Int): Int {
+  return (x + y) as Int
+}
+export function sub(x: Int, y: Int): Int {
+  return (x - y) as Int
+}
+export const one = 1 as Int
 
 export function move(rover: Rover, planet: Planet, command: Command): Rover {
   switch (command._tag) {
@@ -84,7 +91,7 @@ export function move(rover: Rover, planet: Planet, command: Command): Rover {
         case "North": {
           return rover.copy({
             position: rover.position.copy({
-              y: mod((rover.position.y + 1) as Int, planet.gridSize.hight) as PositionY
+              y: mod(add(rover.position.y, one), planet.gridSize.hight) as PositionY
             })
           })
         }
