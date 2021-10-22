@@ -10,6 +10,7 @@
 import { Tagged } from "@effect-ts/core/Case"
 import * as HS from "@effect-ts/core/Collections/Immutable/HashSet"
 import * as T from "@effect-ts/core/Effect"
+import * as Ref from "@effect-ts/core/Effect/Ref"
 import { hole } from "@effect-ts/system/Function"
 
 export interface IntBrand {
@@ -64,7 +65,7 @@ export class Position extends Tagged("Position")<{
   readonly y: PositionY
 }> {}
 
-export class Rover extends Tagged("Rover")<{
+export class RoverState extends Tagged("Rover")<{
   readonly position: Position
   readonly orientation: Orientation
 }> {}
@@ -92,30 +93,50 @@ export class CollisionDetected extends Tagged("CollisionDetected")<{
   readonly roverPosition: Position
 }> {}
 
-export function move(
-  rover: Rover,
+export function processBatch(
   planet: Planet,
-  command: Command
-): T.IO<CollisionDetected, Rover> {
-  const next = nextPosition(rover, planet, command)
-  if (HS.has_(planet.obstacles, next)) {
-    return T.fail(
-      new CollisionDetected({
-        obstaclePosition: next,
-        roverPosition: rover.position
-      })
-    )
-  }
-  return T.succeed(rover.copy({ position: next }))
+  commands: readonly Command[],
+  currentRoverStateRef: Ref.Ref<RoverState>
+): T.IO<CollisionDetected, void> {
+  return T.forEach_(commands, (command) => move(planet, command, currentRoverStateRef))
 }
 
-export function nextPosition(rover: Rover, planet: Planet, command: Command): Position {
+export function move(
+  planet: Planet,
+  command: Command,
+  currentRoverStateRef: Ref.Ref<RoverState>
+): T.IO<CollisionDetected, void> {
+  return T.gen(function* (_) {
+    const rover = yield* _(Ref.get(currentRoverStateRef))
+
+    const next = nextPosition(rover, planet, command)
+
+    if (HS.has_(planet.obstacles, next.position)) {
+      return T.fail(
+        new CollisionDetected({
+          obstaclePosition: next.position,
+          roverPosition: rover.position
+        })
+      )
+    }
+
+    yield* _(Ref.set_(currentRoverStateRef, next))
+  })
+}
+
+export function nextPosition(
+  rover: RoverState,
+  planet: Planet,
+  command: Command
+): RoverState {
   switch (command._tag) {
     case "GoForward": {
       switch (rover.orientation._tag) {
         case "North": {
-          return rover.position.copy({
-            y: mod(add(rover.position.y, one), planet.gridSize.hight) as PositionY
+          return rover.copy({
+            position: rover.position.copy({
+              y: mod(add(rover.position.y, one), planet.gridSize.hight) as PositionY
+            })
           })
         }
         case "Est": {
