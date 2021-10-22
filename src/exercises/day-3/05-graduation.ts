@@ -112,11 +112,13 @@ export function move(
     const next = nextPosition(rover, planet, command)
 
     if (HS.has_(planet.obstacles, next.position)) {
-      return T.fail(
-        new CollisionDetected({
-          obstaclePosition: next.position,
-          roverPosition: rover.position
-        })
+      return yield* _(
+        T.fail(
+          new CollisionDetected({
+            obstaclePosition: next.position,
+            roverPosition: rover.position
+          })
+        )
       )
     }
 
