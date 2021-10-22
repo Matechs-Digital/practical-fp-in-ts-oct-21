@@ -8,6 +8,8 @@
  * https://github.com/Matechs-Garage/mars-rover-kata
  */
 import { Tagged } from "@effect-ts/core/Case"
+import * as HS from "@effect-ts/core/Collections/Immutable/HashSet"
+import * as T from "@effect-ts/core/Effect"
 import { hole } from "@effect-ts/system/Function"
 
 export interface IntBrand {
@@ -35,6 +37,7 @@ export class GridSize extends Tagged("GridSize")<{
 
 export class Planet extends Tagged("Planet")<{
   readonly gridSize: GridSize
+  readonly obstacles: HS.HashSet<Position>
 }> {}
 
 export class North extends Tagged("North")<{}> {}
@@ -84,15 +87,35 @@ export function sub(x: Int, y: Int): Int {
 }
 export const one = 1 as Int
 
-export function move(rover: Rover, planet: Planet, command: Command): Rover {
+export class CollisionDetected extends Tagged("CollisionDetected")<{
+  readonly obstaclePosition: Position
+  readonly roverPosition: Position
+}> {}
+
+export function move(
+  rover: Rover,
+  planet: Planet,
+  command: Command
+): T.IO<CollisionDetected, Rover> {
+  const next = nextPosition(rover, planet, command)
+  if (HS.has_(planet.obstacles, next)) {
+    return T.fail(
+      new CollisionDetected({
+        obstaclePosition: next,
+        roverPosition: rover.position
+      })
+    )
+  }
+  return T.succeed(rover.copy({ position: next }))
+}
+
+export function nextPosition(rover: Rover, planet: Planet, command: Command): Position {
   switch (command._tag) {
     case "GoForward": {
       switch (rover.orientation._tag) {
         case "North": {
-          return rover.copy({
-            position: rover.position.copy({
-              y: mod(add(rover.position.y, one), planet.gridSize.hight) as PositionY
-            })
+          return rover.position.copy({
+            y: mod(add(rover.position.y, one), planet.gridSize.hight) as PositionY
           })
         }
         case "Est": {
