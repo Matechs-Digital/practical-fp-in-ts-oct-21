@@ -23,6 +23,20 @@ import { pipe } from "@effect-ts/core/Function"
 import { tag } from "@effect-ts/core/Has"
 import type { _A } from "@effect-ts/system/Utils"
 
+/**
+ * Exercise:
+ *
+ * Model the dependency tree of the program built in the previous model using layers
+ */
+
+/**
+ * Extension:
+ *
+ * Implement a logger that writes all messages into a file
+ *
+ * Note: a file is a resource that should be opened before your program runs and closed after
+ */
+
 export const makeLiveConsole = T.succeedWith(() => ({
   log: (msg: string) =>
     T.succeedWith(() => {
@@ -89,17 +103,3 @@ export const ConsoleBasedLogger = LiveConsole[">>>"](LiveLogger)
 export const AppDependencies = LiveRandom["+++"](ConsoleBasedLogger)
 
 export const main = pipe(program, T.provideSomeLayer(AppDependencies), T.runPromise)
-
-/**
- * Exercise:
- *
- * Model the dependency tree of the program built in the previous model using layers
- */
-
-/**
- * Extension:
- *
- * Implement a logger that writes all messages into a file
- *
- * Note: a file is a resource that should be opened before your program runs and closed after
- */
