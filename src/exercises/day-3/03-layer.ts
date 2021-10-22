@@ -59,13 +59,11 @@ export class InvalidRandom extends Tagged("InvalidRandom")<{
 export const program = T.gen(function* (_) {
   const x = yield* _(random)
 
-  yield* _(
-    T.if_(
-      x >= 0.5,
-      () => info(`got number: ${x}`),
-      () => T.fail(new InvalidRandom({ invalidRandom: x }))
-    )
-  )
+  if (x >= 0.5) {
+    yield* _(info(`got number: ${x}`))
+  } else {
+    yield* _(T.fail(new InvalidRandom({ invalidRandom: x })))
+  }
 
   return x
 })
